@@ -13,18 +13,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Restore Dependencies
       run: dotnet restore youkoso.sln
 
     - name: Clean Project
       run: dotnet clean youkoso/youkoso.csproj
 
-    - name: Install .NET MAUI Dependencies and Publish iOS App
-      run: dotnet msbuild /t:Restore youkoso/youkoso.csproj
-
     - name: Setup Keystore File
       run: |
-        echo "${{ secrets.KEYSTORE_FILE }}" > keystore.keystore.asc
+        echo "${{ secrets.KEYSTORE_FILE }}" > keystore.keystore
         gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD_GPG }}" --batch keystore.keystore.asc > keystore.keystore
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
@@ -43,6 +41,10 @@ jobs:
     - name: Save AAB and APK
       run: |
         mkdir -p youkoso/artifacts
-        move youkoso/youkoso.aab youkoso/artifacts/aab.aab
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.0
+        mv youkoso/youkoso/bin/Release/net7.0-android/*.aab youkoso/artifacts/aab.aab
+        mv youkoso/youkoso/bin/Release/net7.0-android/*.apk youkoso/artifacts/apk.apk
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: youkoso-artifacts
+        path: youkoso/artifacts
