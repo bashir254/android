@@ -30,13 +30,10 @@ jobs:
         dotnet build youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyStore=keystore.keystore /p:AndroidSigningKeyAlias=ghactionskey /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:BuildMode=Release
     - name: Build AAB and APK
       run: |
-        dotnet publish youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyStore=keystore.keystore /p:AndroidSigningKeyAlias=ghactionskey /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:BuildMode=Release
+        dotnet publish youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyStore=keystore.keystore /p:AndroidSigningKeyAlias=ghactionskey /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:BuildMode=Release /p:OutputPath=./youkoso
     - name: Save AAB and APK
       run: |
         mkdir -p youkoso/artifacts
-        move youkoso.aab youkoso/artifacts/aab.aab
+        move youkoso/youkoso.aab youkoso/artifacts/aab.aab
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
-      with:
-        path: |
-          youkoso/artifacts/aab.aab
