@@ -32,9 +32,15 @@ jobs:
       run: dotnet workload install maui
     - name: Restore dependencies
       run: dotnet restore
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'microsoft'
+        java-version: '17'
+
     - name: Build
       run: |
-        dotnet build youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}" /p:BuildMode=Release --output ./bin
+        dotnet build youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidKeyStore=true /p:AndroidSigningKeyStore=youkoso/keystore.keystore /p:AndroidSigningKeyAlias=${{ secrets.KEYSTORE_PASSWORD_ALIAS }} /p:AndroidSigningKeyPass=${{ secrets.KEYSTORE_PASSWORD }} /p:AndroidSigningStorePass=${{ secrets.KEYSTORE_PASSWORD }} /p:BuildMode=Release --output ./bin --no-restore
     - name: Build AAB and APK
       run: |
         dotnet publish youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}" /p:BuildMode=Release /p:OutputPath=./youkoso
