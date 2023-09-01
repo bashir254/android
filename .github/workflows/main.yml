@@ -22,7 +22,7 @@ jobs:
 
     - name: Setup Keystore File
       run: |
-        echo "${{ secrets.KEYSTORE_FILE }}" > keystore.keystore
+        echo "${{ secrets.KEYSTORE_FILE }}" > keystore.keystore.asc
         gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD_GPG }}" --batch keystore.keystore.asc > keystore.keystore
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
