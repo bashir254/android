@@ -23,7 +23,7 @@ jobs:
     - name: Setup Keystore File
       run: |
         echo "${{ secrets.KEYSTORE_FILE }}" > keystore.keystore.asc
-        gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD_GPG }}" --batch keystore.keystore.asc > keystore.keystore
+        gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD_GPG }}" --batch keystore.keystore.asc > youkoso/keystore.keystore
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
@@ -34,10 +34,10 @@ jobs:
       run: dotnet restore
     - name: Build
       run: |
-        dotnet build youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyStore=keystore.keystore /p:AndroidSigningKeyAlias=ghactionskey /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:BuildMode=Release --output ./bin
+        dotnet build youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyAlias=ghactionskey /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:BuildMode=Release --output ./bin
     - name: Build AAB and APK
       run: |
-        dotnet publish youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyStore=keystore.keystore /p:AndroidSigningKeyAlias=ghactionskey /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:BuildMode=Release /p:OutputPath=./youkoso
+        dotnet publish youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyAlias=ghactionskey /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:BuildMode=Release /p:OutputPath=./youkoso
     - name: Save AAB and APK
       run: |
         mkdir -p youkoso/artifacts
