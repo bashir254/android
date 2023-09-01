@@ -11,17 +11,17 @@ jobs:
 
     runs-on: windows-latest
 
-      - name: Restore Dependencies
-        run: dotnet restore youkoso.sln
-
-      - name: Clean Project
-        run: dotnet clean youkoso/youkoso.csproj
-
-      - name: Install .NET MAUI Dependencies and Publish iOS App
-        run: dotnet msbuild /t:Restore youkoso/youkoso.csproj
-
     steps:
     - uses: actions/checkout@v3
+    - name: Restore Dependencies
+      run: dotnet restore youkoso.sln
+
+    - name: Clean Project
+      run: dotnet clean youkoso/youkoso.csproj
+
+    - name: Install .NET MAUI Dependencies and Publish iOS App
+      run: dotnet msbuild /t:Restore youkoso/youkoso.csproj
+
     - name: Setup Keystore File
       run: |
         echo "${{ secrets.KEYSTORE_FILE }}" > keystore.keystore.asc
