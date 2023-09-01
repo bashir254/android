@@ -26,7 +26,8 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyStore=keystore.keystore /p:AndroidSigningKeyAlias=ghactionskey /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" --no-restore
+      run: |
+        dotnet build youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyStore=keystore.keystore /p:AndroidSigningKeyAlias=ghactionskey /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:BuildMode=Release
     - name: Build AAB and APK
       run: |
         dotnet publish youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyStore=keystore.keystore /p:AndroidSigningKeyAlias=ghactionskey /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:BuildMode=Release
@@ -34,10 +35,8 @@ jobs:
       run: |
         mkdir -p youkoso/artifacts
         move youkoso.aab youkoso/artifacts/aab.aab
-        move youkoso.apk youkoso/artifacts/apk.apk
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
         path: |
           youkoso/artifacts/aab.aab
-          youkoso/artifacts/apk.apk
