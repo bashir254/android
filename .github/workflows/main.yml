@@ -36,7 +36,7 @@ jobs:
         dotnet build youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyStore=keystore.keystore /p:AndroidSigningKeyAlias="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}" /p:BuildMode=Release /p:OutputPath=./youkoso
     - name: Build AAB and APK
       run: |
-dotnet publish -f:net7.0-android -c:Release /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}"
+        dotnet publish -f:net7.0-android -c:Release /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}"
     - name: Save AAB and APK
       run: |
         mkdir -p youkoso/artifacts
