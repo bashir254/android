@@ -28,15 +28,20 @@ jobs:
     - name: Setup Java
       uses: actions/setup-java@v3
       with:
-        distribution: 'microsoft'
-        java-version: '17'
+        distribution: 'adopt'
+
+    - name: Build Application
+      run: dotnet build -c Release
 
     - name: Build AAB and APK
       run: |
         dotnet publish -f:net7.0-android -c:Release /p:AndroidSigningKeyPass=Youkoso /p:AndroidSigningStorePass=Youkoso
-    - name: Save AAB and APK
-      run: |
-        mkdir -p youkoso/artifacts
-        move youkoso/youkoso.aab youkoso/artifacts/aab.aab
-    - name: Upload a Build Artifact
+        mkdir -p publish
+        mv youkoso/youkoso.aab publish/aab.aab
+        mv youkoso/youkoso.apk publish/apk.apk
+
+    - name: Upload Build Artifact
       uses: actions/upload-artifact@v3.1.0
+      with:
+        name: build-artifacts
+        path: publish
