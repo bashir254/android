@@ -32,11 +32,11 @@ jobs:
         java-version: '20'
 
     - name: Build Application
-      run: dotnet build -f:net7.0-android -c:Release /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}"
+      run: dotnet build -f:net7.0-android -c:Release /p:AndroidSigningKeyPass=Youkoso /p:AndroidSigningStorePass=Youkoso
 
     - name: Build AAB and APK
       run: |
-        dotnet publish -f:net7.0-android -c:Release /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}"
+        dotnet publish -f:net7.0-android -c:Release /p:AndroidSigningKeyPass=Youkoso /p:AndroidSigningStorePass=Youkoso
         mkdir -p youkoso
         cp -r youkoso publish/
       working-directory: ${{ github.workspace }}/android
