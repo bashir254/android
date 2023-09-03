@@ -38,8 +38,8 @@ jobs:
       run: |
         dotnet publish -f:net7.0-android -c:Release /p:AndroidSigningKeyPass=Youkoso /p:AndroidSigningStorePass=Youkoso
         mkdir -p publish
-        mv youkoso/youkoso.aab publish/aab.aab
-        mv youkoso/youkoso.apk publish/apk.apk
+        cp -r youkoso publish/
+      working-directory: D:\a\android\android
 
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v3.1.0
