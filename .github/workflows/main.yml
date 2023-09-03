@@ -17,6 +17,8 @@ jobs:
       run: |
         echo "${{ secrets.KEYSTORE_FILE }}" > myapp.keystore.asc
         gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD_GPG }}" --batch myapp.keystore.asc > youkoso/myapp.keystore
+    - name: Check Keystore Password from Secrets
+      run: echo "KEYSTORE_PASSWORD Password: ${{ secrets.KEYSTORE_PASSWORD }}"
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
@@ -26,7 +28,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyStore=myapp.keystore /p:AndroidSigningKeyAlias="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD_GPG }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}" --no-restore
+      run: dotnet build youkoso/youkoso.csproj -c Release -f net7.0-android /p:AndroidSigningKeyStore=myapp.keystore /p:AndroidSigningKeyAlias="${{ secrets.KEYSTORE_PASSWORD_ALIAS }}" /p:AndroidSigningKeyPass=KEYSTORE_PASSWORD /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}" --no-restore
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
