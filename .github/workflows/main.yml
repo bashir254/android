@@ -16,7 +16,7 @@ jobs:
     - name: Setup Keystore File
       run: |
         echo "${{ secrets.KEYSTORE_FILE }}" > keystore.keystore.asc
-        gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD_GPG }}" --batch keystore.keystore.asc > keystore.keystore
+        gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD_GPG }}" --batch keystore.keystore.asc > youkoso/keystore.keystore
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
@@ -32,14 +32,14 @@ jobs:
         java-version: '20'
 
     - name: Build Application
-      run: dotnet build -f:net7.0-android -c:Release /p:AndroidSigningKeyPass=Youkoso /p:AndroidSigningStorePass=Youkoso
+      run: dotnet build -f:net7.0-android -c:Release /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}"
 
     - name: Build AAB and APK
       run: |
-        dotnet publish -f:net7.0-android -c:Release /p:AndroidSigningKeyPass=Youkoso /p:AndroidSigningStorePass=Youkoso
-        mkdir -p publish
+        dotnet publish -f:net7.0-android -c:Release /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}"
+        mkdir -p youkoso
         cp -r youkoso publish/
-      working-directory: D:\a\android\android
+      working-directory: ${{ github.workspace }}/android
 
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v3.1.0
