@@ -37,14 +37,15 @@ jobs:
     - name: Build AAB and APK
       run: |
         dotnet publish -f:net7.0-android -c:Release /p:AndroidSigningKeyPass=Youkoso /p:AndroidSigningStorePass=Youkoso
-- name: Copy files to bin folder
-  shell: powershell
-  run: |
-    mkdir youkoso\bin  # プロジェクトフォルダ内にbinフォルダを作成
-    Copy-Item -Path .\youkoso\bin\Release\net7.0-android\publish\* -Destination .\youkoso\bin\ -Recurse  # ビルドされたファイルをコピー
 
-- name: Publish files as an artifact
-  uses: actions/upload-artifact@v2
-  with:
-    name: app-release
-    path: youkoso\bin\  # アーティファクトとしてアップロードするフォルダのパス
+    - name: Copy files to bin folder
+      shell: powershell
+      run: |
+        mkdir youkoso\bin  # プロジェクトフォルダ内にbinフォルダを作成
+        Copy-Item -Path .\youkoso\bin\Release\net7.0-android\publish\* -Destination .\youkoso\bin\ -Recurse  # ビルドされたファイルをコピー
+
+    - name: Publish files as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release
+        path: youkoso\bin\  # アーティファクトとしてアップロードするフォルダのパス
