@@ -48,7 +48,6 @@
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
 		<AndroidKeyStore>True</AndroidKeyStore>
-		<AndroidSigningKeyAlias>key</AndroidSigningKeyAlias>
 	</PropertyGroup>
 
 	<ItemGroup>
