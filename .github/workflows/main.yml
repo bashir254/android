@@ -16,9 +16,9 @@ jobs:
 
     - name: Setup Keystore File
       run: |
-        echo "$KEYSTORE_PASSWORD_ALIAS" | "${{ secrets.KEYSTORE_PASSWORD_ALIAS }}"
-        echo "$KEYSTORE_PASSWORD" | "${{ secrets.KEYSTORE_PASSWORD }}"
-        echo "$KEYSTORE_PASSWORD_GPG" | "${{ secrets.KEYSTORE_PASSWORD_GPG }}"
+        echo "$KEYSTORE_PASSWORD_ALIAS" > keystore_password_alias
+        echo "$KEYSTORE_PASSWORD" > keystore_password
+        echo "$KEYSTORE_PASSWORD_GPG" > keystore_password_gpg
         echo "${{ secrets.KEYSTORE_FILE }}" > keystore.keystore.asc
         gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD_GPG }}" --batch keystore.keystore.asc > youkoso/keystore.keystore
 
