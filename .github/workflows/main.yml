@@ -1,4 +1,4 @@
-name: Build .NET MAUI Android app
+name: Build .NET MAUI App Android
 
 on:
   push:
@@ -14,45 +14,31 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup Keystore File
-      run: |
-        echo "$KEYSTORE_PASSWORD_ALIAS" > keystore_password_alias
-        echo "$KEYSTORE_PASSWORD" > keystore_password
-        echo "$KEYSTORE_PASSWORD_GPG" > keystore_password_gpg
-        echo "${{ secrets.KEYSTORE_FILE }}" > keystore.keystore.asc
-        gpg -d --passphrase "${{ secrets.KEYSTORE_PASSWORD_GPG }}" --batch keystore.keystore.asc > youkoso/keystore.keystore
+    - name: Restore Dependencies
+      run: dotnet restore youkoso.sln
+
+    - name: Clean Project
+      run: dotnet clean youkoso/youkoso.csproj
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 7.0.x
-
     - name: Install .NET MAUI
       run: dotnet workload install maui
-
     - name: Restore dependencies
       run: dotnet restore
-
     - name: Setup Java
       uses: actions/setup-java@v3
       with:
-        distribution: 'adopt'
-        java-version: '20'
+        distribution: 'microsoft'
+        java-version: '17'
 
-    - name: Build Application
-      run: dotnet build -f:net7.0-android -c:Release /p:AndroidSigningKeyPass=$KEYSTORE_PASSWORD /p:AndroidSigningStorePass=$KEYSTORE_PASSWORD /p:AndroidSigningKeyAlias=$KEYSTORE_PASSWORD_ALIAS
-
-    - name: Build AAB and APK
-      run: |
-        dotnet publish -f:net7.0-android -c:Release /p:AndroidSigningKeyPass=$KEYSTORE_PASSWORD /p:AndroidSigningStorePass=$KEYSTORE_PASSWORD /p:AndroidSigningKeyAlias=$KEYSTORE_PASSWORD_ALIAS
-
-    - name: Copy files to bin folder
-      shell: powershell
-      run: |
-        Copy-Item -Path .\youkoso\bin\Release\net7.0-android\publish\* -Destination .\youkoso\bin\ -Recurse  # ビルドされたファイルをコピー
-
-    - name: Publish files as an artifact
-      uses: actions/upload-artifact@v2
+    - name: Build
+      run: dotnet publish -f:net7.0-android -c:Release /p:AndroidSigningKeyPass="${{ secrets.KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.KEYSTORE_PASSWORD }}" --no-restore
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
       with:
-        name: app-release
-        path: youkoso\bin\  # アーティファクトとしてアップロードするフォルダのパス
+        path: |
+          ./**/*.aab
+          ./**/*.apk
