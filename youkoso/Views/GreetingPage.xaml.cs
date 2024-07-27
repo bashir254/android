@@ -25,8 +25,17 @@ BindingContext = new GreetingViewModel();
             {
                 var item = e.CurrentSelection[0] as Items;
 string url = item.Url;
-amedia.Source = new Uri(url);
-amedia.Play();
+        // Stop the media element to reset it before setting a new source
+        amedia.Stop();
+        // Ensure media source is set before playing
+        amedia.Source = new Uri(url);
+        // Ensure the media is loaded before playing
+        amedia.MediaOpened += (s, args) => 
+        {
+            amedia.Play();
+        };
+        // Reset selection to enable re-selection of the same item
+        ((CollectionView)sender).SelectedItem = null;
 }
 }
 
