@@ -24,7 +24,7 @@
         <CollectionView
         ItemsSource="{Binding TutorialsList1}"
                         SelectedItem="{Binding selectedTutorial}"
-                        SelectionMode="Single"
+                        SelectionMode="TwoWay"
                         SelectionChanged="OnCollectionViewSelectionChanged">
 
             <CollectionView.ItemsLayout>
