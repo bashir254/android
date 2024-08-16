@@ -1,5 +1,7 @@
 using youkoso.Models;
 using youkoso.ViewModels;
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.MediaElement;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Devices.Sensors;
 using System.Collections.ObjectModel;

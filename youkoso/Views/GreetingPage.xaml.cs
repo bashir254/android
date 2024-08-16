@@ -5,6 +5,8 @@ using Microsoft.Maui.Devices.Sensors;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.MediaElement;
 
 namespace youkoso.Views;
 

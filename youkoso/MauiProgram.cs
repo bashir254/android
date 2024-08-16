@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.MediaElement;
 using Microsoft.Extensions.Logging;
 using youkoso.ViewModels;
 using youkoso.Views;
@@ -13,6 +14,7 @@ namespace youkoso
             builder
 .UseMauiApp<App>()
 .UseMauiCommunityToolkit()
+            .UseMauiCommunityToolkitMediaElement()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

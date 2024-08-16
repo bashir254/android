@@ -1,6 +1,11 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Android.Graphics;
+using Android.Media;
+using Android.Util;
+using Microsoft.Maui.Controls;
+using CommunityToolkit.Maui.Views;
 
 namespace youkoso
 {
